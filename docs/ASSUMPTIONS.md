@@ -84,6 +84,32 @@ existing data.
 DBC's `cell_v_001` is physically the first cell in the pack is an assumption.
 Ordering does not affect min/max/delta/sum, which is what the analytics need.
 
+## Recording hardware (learned from the first live capture, 2026-08-21)
+
+**A18 — The CANalyst-II is one USB device and cannot be opened twice.** Opening
+a `can.Bus` per channel fails the second with `[Errno 16] Resource busy`. Its
+python-can backend takes a *sequence* of channels on a single Bus
+(`channel=(0, 1)`, its default) and tags each message with `msg.channel`.
+`record.py` opens one Bus for canalystii and one per channel for socketcan.
+
+**A19 — canalystii timestamps are device-relative, not epoch.** The first live
+capture produced `timestamp_s = -1787301005` because the recorder subtracted a
+wall-clock origin. `record.py` now anchors on the first frame's own timestamp
+regardless of backend, so `timestamp_s` always starts at 0.
+
+**A20 — The two channels arrive globally out of order.** Each channel's
+timestamps are strictly monotonic, but the device buffers them separately and
+python-can drains them in bursts, so ch0 and ch1 frames interleave incorrectly —
+2,445 inversions in a 63k-frame capture, max skew 22.6 ms. `record.py` holds a
+250 ms reorder buffer and emits in timestamp order. Downstream tools assert
+monotonicity, so an unsorted log fails validation rather than silently
+corrupting timeout logic.
+
+**A21 — python-can's canalystii shutdown emits a libusb assertion** on process
+exit (`usbi_mutex_destroy`). It happens after all data is written and flushed
+and does not affect the capture, but it makes the exit status unreliable — check
+the frame count in `session_meta.json`, not the shell exit code.
+
 ## Tooling limitations
 
 **A15 — Automatic field-boundary inference cannot resolve narrow-range values.**

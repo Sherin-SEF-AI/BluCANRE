@@ -43,6 +43,13 @@ import time
 # "stopped_changing" row was just the log ending.
 MARKER_TAIL_S = 30.0
 
+# A multi-channel adapter buffers each channel separately, so python-can drains
+# them in bursts and frames arrive globally out of order even though each
+# channel's own timestamps are monotonic. Measured skew on the CANalyst-II is up
+# to ~23 ms. We hold frames briefly and emit in timestamp order; downstream tools
+# assert monotonicity, and an unsorted log would fail them.
+REORDER_WINDOW_S = 0.25
+
 CSV_HEADER = ["timestamp_s", "can_id_hex", "dlc", "b0", "b1", "b2", "b3", "b4",
               "b5", "b6", "b7", "data_hex", "label", "channel"]
 
@@ -56,31 +63,42 @@ class Recorder:
         self._buses: list = []
         self.t0: float | None = None
         self._t0_mono: float = 0.0
+        self._t_ref: float | None = None
+        self._pending: list = []
+        self._t_max: float = 0.0
+        self._t_origin: float | None = None
         self.gaps: list[tuple[float, float]] = []
 
-    def _open(self, chan: str, idx: int):
+    def _open_all(self) -> list[tuple[object, int | None]]:
+        """Return [(bus, fixed_idx or None)]. None means read idx from msg.channel.
+
+        The CANalyst-II is a single USB device: python-can claims the whole
+        device per Bus, so opening one Bus per channel fails the second with
+        "[Errno 16] Resource busy". Its backend instead takes a sequence of
+        channels on one Bus and tags each message with msg.channel.
+        """
         import can
         if self.backend == "canalystii":
-            return can.Bus(interface="canalystii", channel=int(chan), bitrate=self.bitrate)
-        if self.backend == "socketcan":
-            return can.Bus(interface="socketcan", channel=chan)
-        raise ValueError(f"unknown backend {self.backend}")
+            chans = tuple(int(c) for c in self.channels)
+            bus = can.Bus(interface="canalystii", channel=chans, bitrate=self.bitrate)
+            return [(bus, None)]
+        return [(can.Bus(interface="socketcan", channel=c), i)
+                for i, c in enumerate(self.channels)]
 
-    def _pump(self, chan: str, idx: int):
-        bus = self._open(chan, idx)
-        self._buses.append(bus)
+    def _pump(self, bus, fixed_idx: int | None):
         last_ok = time.monotonic()
         seen_any = False
         while not self._stop.is_set():
             try:
                 msg = bus.recv(timeout=0.5)
             except Exception as exc:                     # adapter dropped out
-                self._q.put(("error", idx, str(exc)))
+                self._q.put(("error", fixed_idx if fixed_idx is not None else -1, str(exc)))
                 time.sleep(0.5)
                 continue
             now = time.monotonic()
             if msg is None:
                 continue
+            idx = fixed_idx if fixed_idx is not None else int(getattr(msg, "channel", 0) or 0)
             # A gap is silence *between* frames. Leading silence (waiting for the
             # bus to wake) and trailing silence are not dropouts, and reporting
             # them as such would poison gap-exclusion in downstream analysis.
@@ -93,8 +111,9 @@ class Recorder:
     def start(self):
         self.t0 = time.time()
         self._t0_mono = time.monotonic()
-        for i, ch in enumerate(self.channels):
-            th = threading.Thread(target=self._pump, args=(ch, i), daemon=True)
+        for bus, fixed_idx in self._open_all():
+            self._buses.append(bus)
+            th = threading.Thread(target=self._pump, args=(bus, fixed_idx), daemon=True)
             th.start()
             self._threads.append(th)
 
@@ -105,6 +124,29 @@ class Recorder:
                 b.shutdown()
             except Exception:
                 pass
+
+    def _flush(self, writer, up_to: float) -> int:
+        """Emit buffered frames with t <= up_to, in timestamp order."""
+        if not self._pending:
+            return 0
+        self._pending.sort(key=lambda r: r[0])
+        # Frames from two channels interleave, so the true earliest timestamp is
+        # only known once the first reorder window has filled. Fix the origin
+        # then, so timestamp_s always starts at exactly 0 and never goes negative.
+        if self._t_origin is None:
+            self._t_origin = self._pending[0][0]
+        i = 0
+        while i < len(self._pending) and self._pending[i][0] <= up_to:
+            t, row = self._pending[i]
+            writer.writerow([f"{t - self._t_origin:.6f}"] + row)
+            i += 1
+        if i:
+            del self._pending[:i]
+        return i
+
+    def flush_all(self, writer) -> int:
+        """Emit everything still buffered. Call once after the last drain."""
+        return self._flush(writer, float("inf"))
 
     def drain(self, writer, deadline: float | None = None) -> int:
         """Move queued frames to CSV. Returns frames written."""
@@ -123,13 +165,22 @@ class Recorder:
                 print(f"  [ch{idx}] bus error: {payload}", file=sys.stderr)
                 continue
             msg = payload
-            t = msg.timestamp - self.t0 if msg.timestamp else time.time() - self.t0
+            if msg.timestamp:
+                # Do not assume an epoch base: the canalystii backend reports
+                # device-relative time, socketcan reports wall clock. Anchor on
+                # the first frame so t is always relative to capture start.
+                if self._t_ref is None:
+                    self._t_ref = msg.timestamp
+                t = msg.timestamp - self._t_ref
+            else:
+                t = time.time() - self.t0
             data = bytes(msg.data)
-            row = [f"{t:.6f}", f"0x{msg.arbitration_id:03X}", len(data)]
+            row = [f"0x{msg.arbitration_id:03X}", len(data)]
             row += [data[i] if i < len(data) else "" for i in range(8)]
             row += [data.hex(), "", idx]
-            writer.writerow(row)
-            n += 1
+            self._pending.append((t, row))
+            self._t_max = max(self._t_max, t)
+            n += self._flush(writer, self._t_max - REORDER_WINDOW_S)
             if deadline is not None and time.monotonic() >= deadline:
                 return n
 
@@ -192,6 +243,7 @@ def main() -> int:
         finally:
             rec.stop()
             n += rec.drain(w)
+            n += rec.flush_all(w)
 
     duration = time.time() - rec.t0
 
