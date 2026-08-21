@@ -1,0 +1,35 @@
+[project]
+name = "blucanre"
+version = "0.1.0"
+description = "Blu CAN Reverse Engineering & Fleet Telematics - Tata Tigor EV"
+readme = "README.md"
+# opendbc pins <3.13 because pycapnp does not build on 3.13+.
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "opendbc",
+    "numpy",
+    "pyyaml",
+    "python-can>=4.0",
+    "canalystii",
+    # Second, independent DBC parser. opendbc's regex parser silently skips any
+    # SG_ line it cannot match (e.g. a missing receiver token) -- no exception,
+    # no warning -- so a DBC can look fine and decode to nothing. validate_dbc
+    # diffs the two parsers to make that failure mode impossible.
+    "cantools>=39",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+# opendbc is vendored read-only at /home/joai/opendbc. We depend on it by path
+# rather than forking it, per the project spec. The DBC itself stays outside the
+# opendbc tree and is loaded by absolute path.
+[tool.uv.sources]
+opendbc = { path = "/home/joai/opendbc", editable = true }
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["blucanre"]

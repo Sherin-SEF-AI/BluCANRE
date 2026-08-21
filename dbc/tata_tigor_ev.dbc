@@ -1,0 +1,211 @@
+VERSION "BluCANRE tata_tigor_ev v0.1.0"
+
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: BMS VCU
+
+BO_ 1256 BMS_CELL_01: 8 BMS
+ SG_ cell_v_001 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_002 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_003 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_004 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_005 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1257 BMS_CELL_02: 8 BMS
+ SG_ cell_v_006 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_007 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_008 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_009 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_010 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1258 BMS_CELL_03: 8 BMS
+ SG_ cell_v_011 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_012 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_013 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_014 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_015 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1259 BMS_CELL_04: 8 BMS
+ SG_ cell_v_016 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_017 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_018 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_019 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_020 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1260 BMS_CELL_05: 8 BMS
+ SG_ cell_v_021 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_022 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_023 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_024 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_025 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1261 BMS_CELL_06: 8 BMS
+ SG_ cell_v_026 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_027 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_028 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_029 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_030 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1262 BMS_CELL_07: 8 BMS
+ SG_ cell_v_031 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_032 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_033 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_034 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_035 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1263 BMS_CELL_08: 8 BMS
+ SG_ cell_v_036 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_037 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_038 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_039 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_040 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1264 BMS_CELL_09: 8 BMS
+ SG_ cell_v_041 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_042 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_043 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_044 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_045 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1265 BMS_CELL_10: 8 BMS
+ SG_ cell_v_046 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_047 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_048 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_049 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_050 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1266 BMS_CELL_11: 8 BMS
+ SG_ cell_v_051 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_052 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_053 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_054 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_055 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1267 BMS_CELL_12: 8 BMS
+ SG_ cell_v_056 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_057 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_058 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_059 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_060 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1268 BMS_CELL_13: 8 BMS
+ SG_ cell_v_061 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_062 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_063 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_064 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_065 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1269 BMS_CELL_14: 8 BMS
+ SG_ cell_v_066 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_067 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_068 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_069 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_070 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1270 BMS_CELL_15: 8 BMS
+ SG_ cell_v_071 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_072 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_073 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_074 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_075 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1271 BMS_CELL_16: 8 BMS
+ SG_ cell_v_076 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_077 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_078 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_079 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_080 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1272 BMS_CELL_17: 8 BMS
+ SG_ cell_v_081 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_082 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_083 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_084 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_085 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1273 BMS_CELL_18: 8 BMS
+ SG_ cell_v_086 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_087 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_088 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_089 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_090 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+BO_ 1274 BMS_CELL_19: 8 BMS
+ SG_ cell_slot_unused : 3|12@0+ (1,0) [0|4095] "mV"  VCU
+ SG_ cell_v_091 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_092 : 27|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_093 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_094 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
+
+CM_ BO_ 1256 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1257 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1258 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1259 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1260 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1261 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1262 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1263 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1264 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1265 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1266 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1267 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1268 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1269 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1270 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1271 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1272 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1273 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+CM_ BO_ 1274 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
+
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 65535;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_ "GenMsgCycleTime" BO_ 1256 300;
+BA_ "GenMsgCycleTime" BO_ 1257 300;
+BA_ "GenMsgCycleTime" BO_ 1258 300;
+BA_ "GenMsgCycleTime" BO_ 1259 300;
+BA_ "GenMsgCycleTime" BO_ 1260 300;
+BA_ "GenMsgCycleTime" BO_ 1261 300;
+BA_ "GenMsgCycleTime" BO_ 1262 300;
+BA_ "GenMsgCycleTime" BO_ 1263 300;
+BA_ "GenMsgCycleTime" BO_ 1264 300;
+BA_ "GenMsgCycleTime" BO_ 1265 300;
+BA_ "GenMsgCycleTime" BO_ 1266 300;
+BA_ "GenMsgCycleTime" BO_ 1267 300;
+BA_ "GenMsgCycleTime" BO_ 1268 300;
+BA_ "GenMsgCycleTime" BO_ 1269 300;
+BA_ "GenMsgCycleTime" BO_ 1270 300;
+BA_ "GenMsgCycleTime" BO_ 1271 300;
+BA_ "GenMsgCycleTime" BO_ 1272 300;
+BA_ "GenMsgCycleTime" BO_ 1273 300;
+BA_ "GenMsgCycleTime" BO_ 1274 300;

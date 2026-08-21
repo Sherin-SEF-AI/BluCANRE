@@ -1,0 +1,152 @@
+# Phase 0b capture protocol — Tata Tigor EV / Xpres-T EV
+#
+# Run:  uv run python tools/record.py --out sessions/<name> --protocol protocols/phase0b_session.yaml
+#
+# WHY THIS EXISTS
+# Two prior sessions captured 4.1M frames and still could not resolve speed,
+# SoC, odometer, gear or torque units. Not because the logs were too short —
+# because nothing recorded what the dashboard said at the time. Every
+# `ground_truth` key below is a question the data cannot answer without it.
+#
+# SAFETY: stationary steps only unless the step says otherwise. Wheels chocked,
+# handbrake on, nobody in front of the vehicle. Driving steps need a second
+# person to operate the laptop — do not read prompts while driving.
+#
+# `repeat: 3` is deliberate. A single occurrence of an event cannot be
+# distinguished from coincidence; three separated repetitions give diff_logs
+# real statistical power.
+
+name: phase0b_baseline_v1
+
+steps:
+  # ---- stationary baseline -------------------------------------------------
+  - id: baseline_off
+    prompt: "Vehicle OFF, key out. Do not touch anything."
+    duration_s: 60
+    ground_truth: [ambient_c]
+
+  - id: key_on_park
+    prompt: "Key ON, gear in P, foot off pedals. Read the dash."
+    duration_s: 60
+    ground_truth: [soc_pct, odo_km, range_km]
+
+  # ---- gear: unlocks trip segmentation ------------------------------------
+  - id: gear_r
+    prompt: "Foot on brake. Select R. Hold."
+    duration_s: 20
+    repeat: 3
+  - id: gear_n
+    prompt: "Select N. Hold."
+    duration_s: 20
+    repeat: 3
+  - id: gear_d
+    prompt: "Select D. Hold, foot on brake."
+    duration_s: 20
+    repeat: 3
+  - id: gear_p
+    prompt: "Back to P."
+    duration_s: 20
+    repeat: 3
+
+  # ---- discrete body signals: cleanest possible diffs ---------------------
+  - id: brake_pumps
+    prompt: "In P. Press and release the brake pedal 10 times, ~1s apart."
+    duration_s: 30
+  - id: door_driver
+    prompt: "Open driver door, wait 5s, close."
+    duration_s: 20
+    repeat: 3
+  - id: door_passenger
+    prompt: "Open front passenger door, wait 5s, close."
+    duration_s: 20
+  - id: doors_rear
+    prompt: "Open both rear doors, wait 5s, close both."
+    duration_s: 20
+  - id: boot
+    prompt: "Open the boot, wait 5s, close."
+    duration_s: 20
+  - id: lock_unlock
+    prompt: "Lock with the remote, wait 5s, unlock."
+    duration_s: 20
+    repeat: 3
+  - id: headlights
+    prompt: "Headlights off -> low -> high -> off, 5s each."
+    duration_s: 30
+  - id: indicators
+    prompt: "Left indicator 5s, off, right 5s, off, hazards 5s, off."
+    duration_s: 30
+  - id: hvac_on
+    prompt: "A/C ON, blower to max."
+    duration_s: 30
+    ground_truth: [hvac_setpoint_c]
+  - id: hvac_off
+    prompt: "A/C OFF, blower off."
+    duration_s: 30
+
+  # ---- steering: settles the 0x247 dispute --------------------------------
+  - id: steering_center
+    prompt: "Wheel exactly centred. Hold still."
+    duration_s: 20
+    ground_truth: [steering_deg]
+  - id: steering_full_left
+    prompt: "Full lock LEFT. Hold."
+    duration_s: 20
+    ground_truth: [steering_deg]
+  - id: steering_full_right
+    prompt: "Full lock RIGHT. Hold."
+    duration_s: 20
+    ground_truth: [steering_deg]
+
+  # ---- driving: the only way to get speed/odometer/regen ------------------
+  # Second person operates the laptop. GPS-locked holds are what separate
+  # "speed x100" from "motor RPM".
+  - id: accel_gentle
+    prompt: "DRIVING. Gentle accelerate to 30 km/h, then coast."
+    duration_s: 60
+  - id: steady_30
+    prompt: "DRIVING. Hold 30 km/h steady (GPS-confirmed)."
+    duration_s: 60
+    ground_truth: [speedo_kmh, gps_kmh]
+  - id: steady_50
+    prompt: "DRIVING. Hold 50 km/h steady (GPS-confirmed)."
+    duration_s: 60
+    ground_truth: [speedo_kmh, gps_kmh]
+  - id: accel_full
+    prompt: "DRIVING, safe straight road. Full-throttle launch from rest."
+    duration_s: 30
+  - id: regen_coast
+    prompt: "DRIVING. Accelerate to 40 km/h, then lift fully and let regen decelerate."
+    duration_s: 60
+    repeat: 3
+  - id: odo_delta
+    prompt: "Read odometer, drive a measured distance, stop, read again."
+    duration_s: 60
+    ground_truth: [odo_km_start, odo_km_end, soc_pct]
+
+  # ---- charging: highest-value logs ---------------------------------------
+  # dc_charge is the single most valuable capture: it is the only event that
+  # swings pack voltage and current far enough to identify them, and it is what
+  # confirms the 94-cell sum against a broadcast pack-voltage signal.
+  - id: ac_charge
+    prompt: "Plug in AC charger. Record through plug-in and 15 min of charging."
+    duration_s: 900
+    ground_truth: [soc_pct, charger_kw]
+  - id: ac_unplug
+    prompt: "Stop charging and unplug."
+    duration_s: 60
+    ground_truth: [soc_pct]
+  - id: dc_charge
+    prompt: "Plug in DC fast charger. Record the whole session if possible."
+    duration_s: 1800
+    ground_truth: [soc_pct, charger_kw, pack_temp_c]
+  - id: dc_unplug
+    prompt: "End DC session and unplug."
+    duration_s: 60
+    ground_truth: [soc_pct]
+
+  # ---- tail: never let the last marker sit at the log end -----------------
+  - id: final_idle
+    prompt: >-
+      Park, gear P, do nothing. This tail exists so the previous marker has a
+      usable 'after' window - do not skip it.
+    duration_s: 60

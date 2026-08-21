@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+sessions/
+
+# Recorded sessions and analysis output are data, not source.
+logs/
+out/
