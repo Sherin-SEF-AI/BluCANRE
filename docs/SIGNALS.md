@@ -41,17 +41,62 @@ uniform messages, a single dead slot, and a pack sum landing on the correct
 voltage for a 26 kWh pack — not by curve-fitting. Three independent decoders
 (hand nibble extraction, cantools, opendbc `CANParser`) agree byte-for-byte.
 
-**Still unverified (Phase 0b).** No dashboard cross-check has been done. The
-decode is self-consistent and physically plausible, but "cell 1 in the DBC is
-physically cell 1 in the pack" is an assumption — cell *ordering* is not proven,
-only the set of 94 values. Ordering does not affect min/max/delta/sum analytics,
-which is everything Phase 3 needs.
+**Independently confirmed** by the BMS's own broadcast extremes on `0x108`
+(below): its cell min/max agree with the min/max of our 94 decoded cells to
+within 1 mV across 165,108 vectors. A wrong bit layout could not do that.
+
+**Still unverified (Phase 0b).** No dashboard cross-check has been done, and
+cell *ordering* remains an assumption — we have proven the correct *set* of 94
+values, not that `cell_v_001` is physically the first cell in the pack. Ordering
+does not affect min/max/delta/sum analytics, which is everything Phase 3 needs.
 
 ### `cell_slot_unused` — `ch1 0x4FA`, slot 0
 
 Declared deliberately rather than omitted, so `validate_dbc.py` can assert it
 stays zero. If a future capture ever populates it, that is a real finding (pack
 reconfiguration or firmware change) rather than a silent blind spot.
+
+---
+
+### BMS broadcast cell extremes — `ch1 0x108` → `cell_v_max_bcast`, `cell_v_min_bcast`
+
+**Layout.** DLC 8, 10 Hz. `b1-2` big-endian 16-bit = highest cell voltage in mV
+(DBC start bit 15); `b3-4` big-endian 16-bit = lowest cell voltage in mV (start
+bit 31). Example: `1b 0c d4 0c d0 02 2e 60` → max 3284 mV, min 3280 mV.
+
+**How it was found.** `tools/correlate.py` uses the confirmed 94-cell map to
+build reference series (pack sum, cell min/max/mean, delta) and correlates every
+candidate field on every other ID against them. `0x108` surfaced with raw ranges
+*identical* to the references, not merely correlated.
+
+**Evidence** (19,149 samples, full 1926 s capture):
+
+| Test | Result |
+|---|---|
+| `b1-2` equals computed `cell_max` exactly | 89.0% of samples |
+| `b1-2` within 2 mV of computed `cell_max` | **100%** |
+| `b3-4` equals computed `cell_min` exactly | 90.7% of samples |
+| `b3-4` within 1 mV of computed `cell_min` | **100%** |
+| `b3-4 <= b1-2` (min ≤ max) | 100% |
+| Enforced in `validate_dbc.py` over full replay | worst deviation 1 mV over 165,108 vectors, 0 inversions |
+
+The residual 1–2 mV is fully explained by rate mismatch: `0x108` broadcasts at
+10 Hz while each cell message arrives at 3.35 Hz, so a zero-order-hold
+reconstruction of the 94 cells lags the BMS's instantaneous extremes by up to
+~300 ms, during which a cell can tick by 1 mV.
+
+**Why this matters more than two extra signals.** It is a *bidirectional*
+check. The BMS's own notion of cell min and max agrees with the min and max
+computed from our independently decoded 94 cells. A wrong nibble offset, bit
+width, or endianness in the `0x4E8–0x4FA` layout could not produce that
+agreement. This is the vehicle-independent confirmation of the cell map that
+was previously listed as missing, and it is now a permanent invariant in
+`validate_dbc.py` — `tools/selftest.py` proves it fails when either field is
+misaligned by one byte or when min and max are swapped.
+
+**Not decoded:** `b0` (256 distinct values) and `b7` (16 distinct) look like
+counters; `b5`/`b6` have 6–7 distinct values. None are proven, so none are in
+the DBC.
 
 ---
 

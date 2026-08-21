@@ -143,6 +143,8 @@ def c5_replay(dbc_path: str, log: str, rep: Report) -> None:
     pack_lo, pack_hi = float("inf"), float("-inf")
     spread_max = 0.0
     unused_nonzero = 0
+    bcast_n = bcast_bad = bcast_order = 0
+    bcast_worst = 0.0
     last: dict[str, float] = {}
 
     for t_ns, frames in canlog.packets(log):
@@ -171,6 +173,19 @@ def c5_replay(dbc_path: str, log: str, rep: Report) -> None:
             spread_max = max(spread_max, max(cells) - min(cells))
             if last.get("cell_slot_unused", 0) != 0:
                 unused_nonzero += 1
+            # Bidirectional check: the BMS broadcasts its own cell extremes on
+            # 0x108. They must agree with the min/max we compute from the 94
+            # decoded cells. Disagreement means our cell layout is wrong.
+            bmax, bmin = last.get(signals.BCAST_MAX), last.get(signals.BCAST_MIN)
+            if bmax is not None and bmin is not None:
+                bcast_n += 1
+                dmax = abs(bmax - max(cells))
+                dmin = abs(bmin - min(cells))
+                bcast_worst = max(bcast_worst, dmax, dmin)
+                if dmax > signals.BCAST_TOLERANCE_MV or dmin > signals.BCAST_TOLERANCE_MV:
+                    bcast_bad += 1
+                if bmin > bmax:
+                    bcast_order += 1
 
     if not (seen_buses & set(parsers)):
         rep.note(f"log has buses {sorted(seen_buses)}; no message defined for them -- "
@@ -185,6 +200,16 @@ def c5_replay(dbc_path: str, log: str, rep: Report) -> None:
         rep.check(spread_max <= 150, f"cell spread plausible (max {spread_max:.0f} mV)")
         rep.check(unused_nonzero == 0,
                   f"0x4FA unused slot stays zero ({unused_nonzero} non-zero of {cell_vectors})")
+        if bcast_n:
+            rep.check(bcast_bad == 0,
+                      f"BMS broadcast extremes agree with computed cells within "
+                      f"{signals.BCAST_TOLERANCE_MV} mV (worst {bcast_worst:.0f} mV "
+                      f"over {bcast_n} samples)",
+                      f"{bcast_bad} sample(s) exceeded tolerance -- the cell layout may be wrong")
+            rep.check(bcast_order == 0,
+                      f"broadcast cell_v_min <= cell_v_max ({bcast_order} inversions of {bcast_n})")
+        else:
+            rep.note("0x108 broadcast extremes not seen -- cross-check NOT EXERCISED")
     else:
         rep.note("no complete 94-cell vector assembled -- cell invariants NOT EXERCISED")
 

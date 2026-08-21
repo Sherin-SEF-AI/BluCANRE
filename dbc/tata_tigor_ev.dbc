@@ -35,6 +35,10 @@ BS_:
 
 BU_: BMS VCU
 
+BO_ 264 BMS_CELL_SUMMARY: 8 BMS
+ SG_ cell_v_max_bcast : 15|16@0+ (1,0) [2500|4250] "mV"  VCU
+ SG_ cell_v_min_bcast : 31|16@0+ (1,0) [2500|4250] "mV"  VCU
+
 BO_ 1256 BMS_CELL_01: 8 BMS
  SG_ cell_v_001 : 3|12@0+ (1,0) [2500|4250] "mV"  VCU
  SG_ cell_v_002 : 23|12@0+ (1,0) [2500|4250] "mV"  VCU
@@ -168,6 +172,7 @@ BO_ 1274 BMS_CELL_19: 8 BMS
  SG_ cell_v_093 : 47|12@0+ (1,0) [2500|4250] "mV"  VCU
  SG_ cell_v_094 : 51|12@0+ (1,0) [2500|4250] "mV"  VCU
 
+CM_ BO_ 264 "Proven offline from drivox session_20260812_184203. b1-2 BE16 and b3-4 BE16 match the min/max of the 94 cells decoded from 0x4E8-0x4FA across 19,149 samples: cell_v_max exact in 89.0% of samples and within 2 mV in 100%; cell_v_min exact in 90.7% and within 1 mV in 100%. Residual is explained by rate mismatch (0x108 at 10 Hz vs each cell message at 3.35 Hz, so a held reconstruction lags by up to ~300 ms). cell_v_min <= cell_v_max holds in 100% of samples. This is a bidirectional check: it also independently confirms the 0x4E8-0x4FA cell layout, since a wrong nibble offset or bit width could not agree with the BMS's own broadcast extremes. b0 (256 distinct) and b7 (16 distinct) look like counters and are NOT decoded.";
 CM_ BO_ 1256 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
 CM_ BO_ 1257 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
 CM_ BO_ 1258 "Proven offline from drivox session_20260812_184203 (4064420 frames, 1926 s). Layout: leading 4-bit nibble skipped, then five 12-bit big-endian cell voltages in mV. Across all 121329 frames of 0x4E8-0x4FA the leading nibble is 0 without exception; slot 0 of 0x4FA is zero in 6385/6385 frames and in no other ID, giving exactly 94 cells. All samples fall in 3275-3283 mV (0 outside the 2500-4250 mV Li-ion envelope); pack sum 308.1-308.4 V; cell delta 4-5 mV. Consistent with a 94s 26 kWh Ziptron pack. Bit positions verified: Motorola starts 3/23/27/47/51 reproduce the nibble decode exactly. NOT yet cross-checked against a dashboard reading - see docs/SIGNALS.md Phase 0b.";
@@ -190,6 +195,7 @@ CM_ BO_ 1274 "Proven offline from drivox session_20260812_184203 (4064420 frames
 
 BA_DEF_ BO_  "GenMsgCycleTime" INT 0 65535;
 BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_ "GenMsgCycleTime" BO_ 264 100;
 BA_ "GenMsgCycleTime" BO_ 1256 300;
 BA_ "GenMsgCycleTime" BO_ 1257 300;
 BA_ "GenMsgCycleTime" BO_ 1258 300;

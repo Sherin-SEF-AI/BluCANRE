@@ -11,7 +11,7 @@ that behind a working DBC.
 ## What is proven so far
 
 `dbc/tata_tigor_ev.dbc` contains the **94-cell BMS voltage map** (`ch1
-0x4E8–0x4FA`) and nothing else. Across 121,329 cell frames from a 32-minute
+0x4E8–0x4FA`) plus the BMS's **broadcast cell extremes** (`ch1 0x108`). Across 121,329 cell frames from a 32-minute
 capture: every cell in 3275–3283 mV, pack sum steady at 308.12–308.49 V, cell
 delta 4–5 mV. Three independent decoders agree.
 
@@ -44,6 +44,7 @@ loaded by absolute path.
 | `tools/discover_ecus.py` | TesterPresent scan for responding ECUs **(transmits)** |
 | `tools/read_vin.py` | Read the VIN over ISO-TP **(transmits)** |
 | `tools/fake_ecu.py` | Fake ISO-TP responder on vcan, to rehearse the above offline |
+| `tools/correlate.py` | Hunt unknown signals against the confirmed cell series |
 | `tools/verify_all.py` | Run the full Phase 0a acceptance checklist |
 
 ## Verify

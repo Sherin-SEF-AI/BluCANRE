@@ -43,6 +43,18 @@ CASES = [
         "wrong start bit (the 3/23/27/47/51 pattern is easy to get wrong)",
         lambda s: s.replace(" SG_ cell_v_002 : 23|12@0+", " SG_ cell_v_002 : 15|12@0+", 1),
     ),
+    (
+        "broadcast cell_v_max misaligned by one byte",
+        lambda s: s.replace(" SG_ cell_v_max_bcast : 15|16@0+", " SG_ cell_v_max_bcast : 7|16@0+", 1),
+    ),
+    (
+        "broadcast min/max swapped (must break the min<=max invariant)",
+        lambda s: s.replace(
+            ' SG_ cell_v_max_bcast : 15|16@0+ (1,0) [2500|4250] "mV"  VCU\n'
+            ' SG_ cell_v_min_bcast : 31|16@0+ (1,0) [2500|4250] "mV"  VCU\n',
+            ' SG_ cell_v_max_bcast : 31|16@0+ (1,0) [2500|4250] "mV"  VCU\n'
+            ' SG_ cell_v_min_bcast : 15|16@0+ (1,0) [2500|4250] "mV"  VCU\n', 1),
+    ),
 ]
 
 

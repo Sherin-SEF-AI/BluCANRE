@@ -56,7 +56,7 @@ def main() -> int:
     run("validate: all three can-analysis captures", [PY, "tools/validate_dbc.py", *CANALYSIS])
 
     print("\nA3  validator rejects injected defects")
-    run("selftest: 5 defects rejected", [PY, "tools/selftest.py"])
+    run("selftest: injected defects rejected", [PY, "tools/selftest.py"])
 
     print("\nA4  analysis tools run over the full 251 MB capture")
     if not args.quick:
@@ -66,6 +66,7 @@ def main() -> int:
         print(f"  {'PASS' if static else 'FAIL'}  bit_activity reports static IDs")
         run("bit_activity selftest", [PY, "tools/bit_activity.py", "--selftest", DRIVOX_BIG])
         run("diff_logs: two drivox sessions", [PY, "tools/diff_logs.py", "--a", DRIVOX_SMALL, "--b", DRIVOX_BIG])
+        run("correlate: cell-anchored signal hunt", [PY, "tools/correlate.py", DRIVOX_BIG])
 
     print("\nA5  guards refuse unsupportable analysis")
     if not args.quick:

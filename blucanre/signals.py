@@ -39,7 +39,17 @@ PACK_V_MIN = 300.0
 PACK_V_MAX = 320.0
 
 MESSAGES_CH0: list[tuple[str, int]] = []
-MESSAGES_CH1: list[tuple[str, int]] = list(CELL_MESSAGES)
+# BMS broadcast of its own cell extremes -- ch1 0x108 at 10 Hz.
+SUMMARY_MESSAGE = ("BMS_CELL_SUMMARY", 10)
+BCAST_MAX, BCAST_MIN = "cell_v_max_bcast", "cell_v_min_bcast"
+
+# Tolerance for broadcast-vs-computed agreement. 0x108 runs at 10 Hz while each
+# cell message arrives at 3.35 Hz, so a held reconstruction of the 94 cells lags
+# the BMS's instantaneous extremes by up to ~300 ms. Observed max deviation is
+# 2 mV; 5 mV leaves headroom without letting a real decode error through.
+BCAST_TOLERANCE_MV = 5
+
+MESSAGES_CH1: list[tuple[str, int]] = list(CELL_MESSAGES) + [SUMMARY_MESSAGE]
 
 MESSAGES_BY_BUS: dict[int, list[tuple[str, int]]] = {
     BUS_CH0: MESSAGES_CH0,
