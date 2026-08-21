@@ -36,7 +36,8 @@ loaded by absolute path.
 
 | Tool | Purpose |
 |---|---|
-| `tools/record.py` | Capture a session with markers and dashboard ground truth |
+| `tools/gui.py` | **Browser app** - click-through recording, no commands to type |
+| `tools/record.py` | Same capture from the command line |
 | `tools/validate_dbc.py` | Gate the DBC: dual-parser diff, bounds, invariants |
 | `tools/selftest.py` | Prove the validator rejects injected defects |
 | `tools/bit_activity.py` | Per-bit heatmap and field-boundary candidates |
@@ -85,6 +86,16 @@ uv run python tools/read_vin.py --backend socketcan --channel vcan1 \
 **The authorisation preconditions in `docs/COMPLIANCE.md` are recorded as NOT
 MET.** Passing the flags asserts otherwise; that is your call to make, not the
 tool's.
+
+## Recording (easiest way)
+
+```bash
+uv run python tools/gui.py
+```
+
+Opens a browser page. Pick what to record, follow one instruction at a time,
+press a button, type the dashboard numbers when asked. Writes exactly the same
+files as `record.py`.
 
 ## Next: capture a session
 
