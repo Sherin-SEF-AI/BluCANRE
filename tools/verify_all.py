@@ -46,8 +46,9 @@ def main() -> int:
                     help="skip the checks that stream the full 251 MB capture")
     args = ap.parse_args()
 
-    print("A1  environment")
+    print("A1  environment and loader")
     run("opendbc imports on 3.12", [PY, "-c", "from opendbc.can import CANParser; import cantools, can, numpy"])
+    run("canlog unit tests", [PY, "tools/test_canlog.py"])
 
     print("\nA2  DBC validates against every available capture")
     if not args.quick:

@@ -45,6 +45,7 @@ loaded by absolute path.
 | `tools/read_vin.py` | Read the VIN over ISO-TP **(transmits)** |
 | `tools/fake_ecu.py` | Fake ISO-TP responder on vcan, to rehearse the above offline |
 | `tools/correlate.py` | Hunt unknown signals against the confirmed cell series |
+| `tools/test_canlog.py` | Loader unit tests on synthetic fixtures |
 | `tools/verify_all.py` | Run the full Phase 0a acceptance checklist |
 
 ## Verify
