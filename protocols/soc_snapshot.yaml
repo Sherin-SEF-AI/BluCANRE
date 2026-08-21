@@ -1,0 +1,25 @@
+# SoC ladder - a 60-second capture plus the dashboard reading.
+#
+# Why this exists: correlate.py --compare solves a signal's factor and offset
+# from two captures taken at different states of charge. One capture spans only
+# ~0.4 V of pack voltage; two captures 4.4 V apart already produced the 0x394
+# pack-voltage lead. More rungs at more SoC levels turn a two-point fit (which
+# cannot be detectably wrong) into an over-determined one (which can).
+#
+# It costs a minute. Run it whenever the car happens to be at a noticeably
+# different charge level - before and after a commute, after charging overnight.
+# No driving, no second person, no charger required.
+#
+# Run: uv run python tools/record.py --out sessions/soc_$(date +%%Y%%m%%d_%%H%%M) \
+#          --protocol protocols/soc_snapshot.yaml
+
+name: soc_snapshot
+steps:
+- id: soc_snapshot
+  prompt: Key ON, gear P, foot off pedals. Note the dash SoC and odometer.
+  duration_s: 60
+  ground_truth:
+  - soc_pct
+  - odo_km
+  - range_km
+  - ambient_c

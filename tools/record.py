@@ -185,6 +185,18 @@ class Recorder:
                 return n
 
 
+def _ask(prompt: str) -> str:
+    """input() that treats a closed stdin as 'stop', not as a crash.
+
+    Without this a piped or nohup'd run dies with a bare EOFError mid-protocol
+    and the markers and ground truth collected so far are never written.
+    """
+    try:
+        return input(prompt)
+    except EOFError:
+        raise KeyboardInterrupt("stdin closed")
+
+
 def run_protocol(path: str, rec: Recorder, writer, markers: list, truth: list):
     import yaml
     steps = yaml.safe_load(open(path))["steps"]
@@ -193,7 +205,7 @@ def run_protocol(path: str, rec: Recorder, writer, markers: list, truth: list):
         for rep in range(step.get("repeat", 1)):
             tag = step["id"] + (f"_r{rep+1}" if step.get("repeat", 1) > 1 else "")
             print(f"\n[{i}/{total}] {tag}\n    {step['prompt']}")
-            input("    press ENTER when in position...")
+            _ask("    press ENTER when in position...")
             t_start = time.time() - rec.t0
             markers.append((t_start, f"{tag}_start", ""))
             dur = float(step.get("duration_s", 10))
@@ -202,7 +214,7 @@ def run_protocol(path: str, rec: Recorder, writer, markers: list, truth: list):
             markers.append((time.time() - rec.t0, f"{tag}_end", ""))
             print(" done")
             for key in step.get("ground_truth", []):
-                val = input(f"    dashboard {key} = ").strip()
+                val = _ask(f"    dashboard {key} = ").strip()
                 if val:
                     truth.append((time.time() - rec.t0, key, val, "", tag))
 

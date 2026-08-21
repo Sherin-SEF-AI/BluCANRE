@@ -1,0 +1,44 @@
+# Session C - CHARGING. Needs a charger; dc_charge is the single highest-value
+# capture in the project. It is the confirming test for the ch0 0x394
+# pack-voltage lead and the only event that swings pack current enough to
+# identify it.
+#
+# Run: uv run python tools/record.py --out sessions/<name> --protocol protocols/session_c_charging.yaml
+
+name: phase0b_session_c_charging
+steps:
+- id: key_on_park
+  prompt: Key ON, gear in P, foot off pedals. Read the dash.
+  duration_s: 60
+  ground_truth:
+  - soc_pct
+  - odo_km
+  - range_km
+- id: ac_charge
+  prompt: Plug in AC charger. Record through plug-in and 15 min of charging.
+  duration_s: 900
+  ground_truth:
+  - soc_pct
+  - charger_kw
+- id: ac_unplug
+  prompt: Stop charging and unplug.
+  duration_s: 60
+  ground_truth:
+  - soc_pct
+- id: dc_charge
+  prompt: Plug in DC fast charger. Record the whole session if possible.
+  duration_s: 1800
+  ground_truth:
+  - soc_pct
+  - charger_kw
+  - pack_temp_c
+  - pack_voltage_v
+- id: dc_unplug
+  prompt: End DC session and unplug.
+  duration_s: 60
+  ground_truth:
+  - soc_pct
+- id: final_idle
+  prompt: Park, gear P, do nothing. This tail exists so the previous marker has a usable 'after'
+    window - do not skip it.
+  duration_s: 60

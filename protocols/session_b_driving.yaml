@@ -1,0 +1,49 @@
+# Session B - DRIVING. ~10 min of driving, TWO PEOPLE.
+# The passenger operates the laptop and answers prompts. Do not read prompts
+# while driving. Settles 0x247 (speed vs RPM vs steering), torque units and
+# the odometer scale.
+#
+# Run: uv run python tools/record.py --out sessions/<name> --protocol protocols/session_b_driving.yaml
+
+name: phase0b_session_b_driving
+steps:
+- id: key_on_park
+  prompt: Key ON, gear in P, foot off pedals. Read the dash.
+  duration_s: 60
+  ground_truth:
+  - soc_pct
+  - odo_km
+  - range_km
+- id: accel_gentle
+  prompt: DRIVING. Gentle accelerate to 30 km/h, then coast.
+  duration_s: 60
+- id: steady_30
+  prompt: DRIVING. Hold 30 km/h steady (GPS-confirmed).
+  duration_s: 60
+  ground_truth:
+  - speedo_kmh
+  - gps_kmh
+- id: steady_50
+  prompt: DRIVING. Hold 50 km/h steady (GPS-confirmed).
+  duration_s: 60
+  ground_truth:
+  - speedo_kmh
+  - gps_kmh
+- id: accel_full
+  prompt: DRIVING, safe straight road. Full-throttle launch from rest.
+  duration_s: 30
+- id: regen_coast
+  prompt: DRIVING. Accelerate to 40 km/h, then lift fully and let regen decelerate.
+  duration_s: 60
+  repeat: 3
+- id: odo_delta
+  prompt: Read odometer, drive a measured distance, stop, read again.
+  duration_s: 60
+  ground_truth:
+  - odo_km_start
+  - odo_km_end
+  - soc_pct
+- id: final_idle
+  prompt: Park, gear P, do nothing. This tail exists so the previous marker has a usable 'after'
+    window - do not skip it.
+  duration_s: 60

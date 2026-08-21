@@ -1,0 +1,90 @@
+# Session A - STATIONARY. ~20 min, driveway, one person.
+# Highest decodable-signals-per-minute in the whole plan: every step here
+# produces a discrete state change, which is the cleanest possible diff.
+# Nothing here requires the car to move.
+#
+# Run: uv run python tools/record.py --out sessions/<name> --protocol protocols/session_a_stationary.yaml
+
+name: phase0b_session_a_stationary
+steps:
+- id: baseline_off
+  prompt: Vehicle OFF, key out. Do not touch anything.
+  duration_s: 60
+  ground_truth:
+  - ambient_c
+- id: key_on_park
+  prompt: Key ON, gear in P, foot off pedals. Read the dash.
+  duration_s: 60
+  ground_truth:
+  - soc_pct
+  - odo_km
+  - range_km
+- id: gear_r
+  prompt: Foot on brake. Select R. Hold.
+  duration_s: 20
+  repeat: 3
+- id: gear_n
+  prompt: Select N. Hold.
+  duration_s: 20
+  repeat: 3
+- id: gear_d
+  prompt: Select D. Hold, foot on brake.
+  duration_s: 20
+  repeat: 3
+- id: gear_p
+  prompt: Back to P.
+  duration_s: 20
+  repeat: 3
+- id: brake_pumps
+  prompt: In P. Press and release the brake pedal 10 times, ~1s apart.
+  duration_s: 30
+- id: door_driver
+  prompt: Open driver door, wait 5s, close.
+  duration_s: 20
+  repeat: 3
+- id: door_passenger
+  prompt: Open front passenger door, wait 5s, close.
+  duration_s: 20
+- id: doors_rear
+  prompt: Open both rear doors, wait 5s, close both.
+  duration_s: 20
+- id: boot
+  prompt: Open the boot, wait 5s, close.
+  duration_s: 20
+- id: lock_unlock
+  prompt: Lock with the remote, wait 5s, unlock.
+  duration_s: 20
+  repeat: 3
+- id: headlights
+  prompt: Headlights off -> low -> high -> off, 5s each.
+  duration_s: 30
+- id: indicators
+  prompt: Left indicator 5s, off, right 5s, off, hazards 5s, off.
+  duration_s: 30
+- id: hvac_on
+  prompt: A/C ON, blower to max.
+  duration_s: 30
+  ground_truth:
+  - hvac_setpoint_c
+- id: hvac_off
+  prompt: A/C OFF, blower off.
+  duration_s: 30
+- id: steering_center
+  prompt: Wheel exactly centred. Hold still.
+  duration_s: 20
+  ground_truth:
+  - steering_deg
+- id: steering_full_left
+  prompt: Full lock LEFT. Hold.
+  duration_s: 20
+  ground_truth:
+  - steering_deg
+- id: steering_full_right
+  prompt: Full lock RIGHT. Hold.
+  duration_s: 20
+  ground_truth:
+  - steering_deg
+- id: final_idle
+  prompt: Park, gear P, do nothing. This tail exists so the previous marker has a usable 'after'
+    window - do not skip it.
+  duration_s: 60
