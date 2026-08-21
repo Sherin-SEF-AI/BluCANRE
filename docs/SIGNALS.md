@@ -41,6 +41,11 @@ uniform messages, a single dead slot, and a pack sum landing on the correct
 voltage for a 26 kWh pack — not by curve-fitting. Three independent decoders
 (hand nibble extraction, cantools, opendbc `CANParser`) agree byte-for-byte.
 
+**Independently confirmed a second way:** cross-capture solving (`correlate.py
+--compare`) fits the `0x108` broadcast extremes to pack voltage with scale
+0.094128. The theoretical value for a 94-cell pack is 94/1000 = 0.094 — a 0.14%
+match, arrived at without assuming the cell count anywhere in the calculation.
+
 **Independently confirmed** by the BMS's own broadcast extremes on `0x108`
 (below): its cell min/max agree with the min/max of our 94 decoded cells to
 within 1 mV across 165,108 vectors. A wrong bit layout could not do that.
@@ -97,6 +102,45 @@ misaligned by one byte or when min and max are swapped.
 **Not decoded:** `b0` (256 distinct values) and `b7` (16 distinct) look like
 counters; `b5`/`b6` have 6–7 distinct values. None are proven, so none are in
 the DBC.
+
+---
+
+### Pack voltage candidate — `ch0 0x394`, nibble 8, 12-bit BE  (LEAD, NOT PROVEN)
+
+The strongest remaining offline lead. Found by `tools/correlate.py --compare`,
+which solves factor and offset from two captures taken at different states of
+charge — a two-point method that works where single-capture correlation cannot,
+because one capture only spans 0.37 V of pack voltage.
+
+| Capture | `0x394` × 0.1 | cell-sum pack | residual |
+|---|---|---|---|
+| 2026-08-21 live, 30 s | 311.8–312.3 V | 312.64–312.65 V | −0.359 V (σ 0.069) |
+| 2026-08-12, 1926 s | 307.4–308.1 V | 308.12–308.49 V | −0.461 V (σ 0.122) |
+
+Solved from the two medians: factor ≈ 0.1, offset ≈ +0.4 V. It tracks a 4.4 V
+change in pack voltage correctly.
+
+**Why it is NOT in the DBC.** Three reasons, any one sufficient:
+1. Within-capture correlation against the cell sum is only r = +0.66 (long
+   capture) and −0.09 (short one) — it does not track the fine 0.37 V wander.
+2. Resolution is coarse: only 3–4 distinct raw values per capture.
+3. The ~0.4 V offset is unexplained. A pack-voltage sensor should read the pack
+   sum directly. It may measure after the contactor or fuse, or be a different
+   quantity entirely (available voltage, a limit, a filtered estimate).
+
+Two points define a line, so a two-point fit *cannot* be detectably wrong. This
+needs a third state of charge with real swing.
+
+**Confirming test:** a `dc_charge` log. Pack voltage moves tens of volts during
+a DC session. If `0x394 × 0.1` tracks the cell sum through that swing with a
+stable residual, it is confirmed and the offset becomes measurable. If it flattens
+or saturates, it is a limit or estimate, not the measurement.
+
+### `ch1 0x102` b4-5 BE16 — weaker pack-voltage candidate
+
+Solves to factor ≈ 0.25 with a +4.93 V offset. The large offset and 0.25 V
+quantisation (which swamps the real 0.37 V spread within a capture) make this
+substantially weaker than `0x394`. Same confirming test.
 
 ---
 

@@ -136,9 +136,13 @@ steps:
     duration_s: 60
     ground_truth: [soc_pct]
   - id: dc_charge
+    # Highest-value capture in the whole protocol. It is the confirming test for
+    # the ch0 0x394 pack-voltage lead (docs/SIGNALS.md): pack voltage swings tens
+    # of volts here, which is the only way to tell a real measurement from a
+    # limit or a filtered estimate.
     prompt: "Plug in DC fast charger. Record the whole session if possible."
     duration_s: 1800
-    ground_truth: [soc_pct, charger_kw, pack_temp_c]
+    ground_truth: [soc_pct, charger_kw, pack_temp_c, pack_voltage_v]
   - id: dc_unplug
     prompt: "End DC session and unplug."
     duration_s: 60
